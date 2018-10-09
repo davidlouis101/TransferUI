@@ -10,54 +10,45 @@ use pocketmine\command\CommandSender;
 use pocketmine\event\Listener;
 use pocketmine\utils\TextFormat;
 
-class Main extends PluginBase implements Listener {
+class Main extends PluginBase implements Listener{
 
-
-    public function onEnable() {
-        $this->getServer()->getPluginManager()->registerEvents($this, $this);    
+    public function onEnable() : void{
+        $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $this->getLogger()->info(TextFormat::GREEN . "Enabled!");
     }
 
-    public function onDisable() {
-$this->getServer()->getPluginManager()->registerEvents($this,$this);
+    public function onDisable() : void{
         $this->getLogger()->info(TextFormat::RED . "Disabled!");
     }
 
-    public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args) : bool {
-        switch($cmd->getName()){                    
+    public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
+        switch($command->getName()){
             case "transfer":
-                if ($sender instanceof Player){
-                     $this->openMyForm($sender);
-                }else{     
-                     $sender->sendMesseage(TextFormat::RED . "Run the command in-game");
-                     return true;
-                }     
-            break;         
-            
-         }  
-        return true;                         
+                if($sender instanceof Player){
+                    $this->openMyForm($sender);
+                    $sender->sendMesseage(TextFormat::GREEN . "Select a server!");
+                }else{
+                    $sender->sendMesseage(TextFormat::RED . "Please run this command in-game");
+                }
+                break;
+        }
+        return true;
     }
-   
-    public function openMyForm($player){ 
+
+    public function openMyForm(Player $player) : void{
         $api = $this->getServer()->getPluginManager()->getPlugin("FormAPI");
-        $form = $api->createSimpleForm(function (Player $player, int $data = null){
+        $form = $api->createSimpleForm(function(Player $player, int $data = null){
             $result = $data;
             if($result === null){
-                return true;
-            }             
-            switch($result){
-                case 0:
-                    $player->transfer("play.hyperlandsmc.net");
-                break;
+                return;
             }
-            
-            
-            });
-            $form->setTitle("§lTransferUI");
-            $form->setContent("Select server to transfer!");
-            $form->addButton("HyperLands");
-            $form->sendToPlayer($player);                  
-            return $form;                                            
+            if($result === 0){
+                $player->transfer("play.hyperlandsmc.net");
+            }
+        });
+        $form->setTitle("§lTransferUI");
+        $form->setContent("Select server to transfer!");
+        $form->addButton("HyperLands");
+        $form->sendToPlayer($player);
     }
-                                                                                                                                                                                                                                                                                          
 }
