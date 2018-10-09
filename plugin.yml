@@ -1,1 +1,10 @@
+name: TransferUI
+main: Fadhel\Main
+api: [3.0.0]
+version: 0.1
+author: Fadhel
 
+commands:
+ transfer:
+  description: "Transfer to servers!"
+ 
