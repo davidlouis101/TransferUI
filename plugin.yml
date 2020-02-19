@@ -5,6 +5,6 @@ version: 0.1
 author: Fadhel
 
 commands:
- transfer:
-  description: "Transfer to servers!"
+ Server:
+  description: "Geh auf Partner-Server"
  
